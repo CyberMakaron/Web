@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import SingIn from '../views/SingIn.vue'
 import RoutingTable from "@/views/RoutsTable";
 import Registration from "@/views/Registration";
+import Profile from "@/views/Profile";
 
 Vue.use(VueRouter)
 
@@ -17,6 +18,11 @@ const routes = [
     path: '/singin',
     name: 'SingIn',
     component: SingIn
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    component: Profile
   },
   {
     path: '/registration',

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Белгород - Старый Оскол 01.01.2020</h1>
+    <h1>{{$route.params.depart}} - {{$route.params.arrive}} {{$route.params.date}}</h1>
   <table class="table table-striped my-5">
     <thead>
     <tr>
@@ -17,50 +17,25 @@
   </table>
   </div>
 </template>
-
+<!--TODO сделать что-то с обновлением страницы
+  как вариант добавить на странице home данные в localStorage, здесь их извлекать. Пример в User.js-->
 <script>
 import RoutingTableRow from "@/components/RoutingTableRow";
+import Axios from "axios";
 export default {
   name: "RoutingTable",
   components: {RoutingTableRow},
   data() {
     return {
-      items: [
-        {
-          depart: "Белгород",
-          departTime: "8:00",
-          arrive: "Старый Оскол",
-          arriveTime: "10:45",
-          train: "Белгород - Старый Оскол №001",
-          economyPrice: "50 руб",
-          economyEmptySeats: "30",
-          coupPrice: "1000 руб",
-          coupEmptySeats: "15"
-        },
-        {
-          depart: "Белгород",
-          departTime: "11:00",
-          arrive: "Старый Оскол",
-          arriveTime: "13:45",
-          train: "Белгород - Старый Оскол №002",
-          economyPrice: "50 руб",
-          economyEmptySeats: "30",
-          coupPrice: "1000 руб",
-          coupEmptySeats: "15"
-        },
-        {
-          depart: "Белгород",
-          departTime: "18:00",
-          arrive: "Старый Оскол",
-          arriveTime: "20:45",
-          train: "Белгород - Старый Оскол №003",
-          economyPrice: "50 руб",
-          economyEmptySeats: "30",
-          coupPrice: "1000 руб",
-          coupEmptySeats: "15"
-        }
-      ]
+      items: []
     }
+  },
+  created() {
+    const instance = Axios.create({
+      baseURL: 'http://localhost:8000/v1'
+    });
+    //TODO побороть CORS и сделать POST запрос
+    instance.get('/tickets/trains').then((response) => this.items = response.data)
   }
 }
 </script>

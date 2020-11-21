@@ -21,23 +21,12 @@
 <!--              </li>-->
 <!--            </ul>-->
             <ul class="navbar-nav ml-auto mr-5">
-              <li class="nav-item">
+              <li class="nav-item" v-if="user.isAuth()">
+                <router-link class="nav-link" v-bind:to="{name: 'Profile'}">{{ user.name }}</router-link>
+              <li class="nav-item" v-else>
                 <router-link class="nav-link" v-bind:to="{name: 'SingIn'}">Войти</router-link>
               </li>
             </ul>
-<!--            <ul class="navbar-nav">-->
-<!--              <li class="nav-item">-->
-<!--                <CartWidget></CartWidget>-->
-<!--              </li>-->
-<!--              <li class="nav-item" v-if="user.isAuth()">-->
-<!--                <router-link class="nav-link" v-bind:to="{name: 'Profile'}">{{ user.email }}</router-link>-->
-<!--              </li>-->
-<!--              <li class="nav-item" v-else>-->
-<!--                <router-link class="nav-link" v-bind:to="{name: 'SignIn'}">Войти</router-link>-->
-<!--              </li>-->
-<!--            </ul>-->
-<!--          </div>-->
-<!--        </div>-->
       </nav>
     </header>
 
@@ -53,3 +42,14 @@
     </footer>
   </div>
 </template>
+
+<script>
+import User from '@/components/User'
+export default {
+  data() {
+    return {
+      user: User
+    }
+  }
+}
+</script>
