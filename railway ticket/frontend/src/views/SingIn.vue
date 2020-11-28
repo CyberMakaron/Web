@@ -19,7 +19,6 @@
 </template>
 
 <script>
-// import User from '@/components/user/user'
 import Axios from "axios";
 import User from "@/components/User";
 import router from "@/router";
@@ -32,20 +31,17 @@ export default {
     }
   },
   methods: {
-    signIn(event) {
-      User.login({name : this.email,
-                       email : this.email,
-                       accessToken : '218f94b634b1e70cefe4ecf97adc05aa' });
-      //TODO добить CORS (кроссдоменный POST)
-        // const instance = Axios.create({
-        //   baseURL: 'http://localhost:8000/v1'
-        // });
-        // instance.post('/user/login', {
-        //   email: this.email,
-        //   password: this.password
-        // }).then((response) => {User.login(response.data); })
-        //   //.catch((errors) => {/*TODO обработать ошибку*/})
+    signIn(event){
+        const instance = Axios.create({
+          baseURL: 'http://localhost:1149/v1'
+        });
+        instance.post('/user/login', {
+          email: this.email,
+          password: this.password
+        }).then((response) => {User.login(response.data); })
+          //.catch((errors) => {/*TODO обработать ошибку*/})
       router.push({name: 'Home'})
+      event.preventDefault()
     }
   }
 }

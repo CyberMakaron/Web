@@ -32,7 +32,7 @@ const routes = [
   {
     path: '/routstable',
     name: 'RoutsTable',
-    component: RoutingTable
+    component: RoutingTable,
   }
 ]
 

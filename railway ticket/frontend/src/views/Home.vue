@@ -27,8 +27,7 @@
         </div>
         <div class="col-md-3 mb-3">
           <router-link class="btn btn-danger btn-block btn-bot"
-                       v-bind:to="{name: 'RoutsTable', params: {depart: depart, arrive : arrive, date: date}}">Найти билеты</router-link>
-<!--          <button class="btn btn-danger btn-block btn-bot" v-on:click="btnClick">Найти билеты</button>-->
+                       v-bind:to="{name: 'RoutsTable', query: {depart: depart, arrive : arrive, date: date}}">Найти билеты</router-link>
         </div>
       </div>
     </form>
@@ -51,7 +50,7 @@ export default {
   },
   created() {
     const instance = Axios.create({
-      baseURL: 'http://localhost:8000/v1'
+      baseURL: 'http://localhost:1149/v1'
     });
     instance.get('/tickets/depart_points').then((response) => this.depart_options = response.data)
     instance.get('/tickets/arrive_points').then((response) => this.arrive_options = response.data)

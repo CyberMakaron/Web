@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h1>{{$route.params.depart}} - {{$route.params.arrive}} {{$route.params.date}}</h1>
+<!--    <h1>{{$route.query.depart}} - {{$route.query.arrive}} {{$route.query.date}}</h1>-->
+    <h1>{{query.depart}} - {{query.arrive}} {{query.date}}</h1>-
   <table class="table table-striped my-5">
     <thead>
     <tr>
@@ -17,25 +18,30 @@
   </table>
   </div>
 </template>
-<!--TODO сделать что-то с обновлением страницы
-  как вариант добавить на странице home данные в localStorage, здесь их извлекать. Пример в User.js-->
+
 <script>
 import RoutingTableRow from "@/components/RoutingTableRow";
 import Axios from "axios";
+import User from "@/components/User";
 export default {
   name: "RoutingTable",
   components: {RoutingTableRow},
   data() {
     return {
+      query: this.$route.query,
       items: []
     }
   },
   created() {
     const instance = Axios.create({
-      baseURL: 'http://localhost:8000/v1'
+      baseURL: 'http://localhost:1149/v1'
     });
-    //TODO побороть CORS и сделать POST запрос
-    instance.get('/tickets/trains').then((response) => this.items = response.data)
+    instance.post('/tickets/trains', {
+      depart: this.query.depart,
+      arrive: this.query.arrive,
+      date: this.query.date
+    }).then((response) => { this.items = response.data })
+    //.catch((errors) => {/*TODO обработать ошибку*/})
   }
 }
 </script>
