@@ -2,9 +2,9 @@
 
 namespace app\modules\v1\models;
 
-use yii\base\Model;
+use yii\db\ActiveRecord;
 
-class LoginForm extends Model {
+class LoginForm extends ActiveRecord {
     public $email;
     public $password;
 

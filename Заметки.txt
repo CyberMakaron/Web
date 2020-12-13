@@ -1,0 +1,7 @@
+http://localhost:1149/adminer-4.7.8.php - ведение БД
+npm run serve - запус vue
+docker-compose up - поднять докер (создать) down - удалить
+
+docker-compose.yml - конфиг сервера (БД)
+
+http://localhost:1149/gii - генератор

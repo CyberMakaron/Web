@@ -5,20 +5,7 @@ namespace app\modules\v1\controllers;
 
 
 class TicketsController extends ApiController {
-    public function actionDepart_points() {
-        return [
-            [ 'text' => 'Белгород', 'value' => 'Белгород' ],
-            [ 'text' => 'Старый Оскол', 'value' => 'Старый Оскол' ],
-            [ 'text' => 'Москва', 'value' => 'Москва' ]
-        ];
-    }
-    public function actionArrive_points() {
-        return [
-            [ 'text' => 'Белгород', 'value' => 'Белгород' ],
-            [ 'text' => 'Старый Оскол', 'value' => 'Старый Оскол' ],
-            [ 'text' => 'Москва', 'value' => 'Москва' ]
-        ];
-    }
+
     public function actionTrains() {
         return [
             [ 'depart' => 'Белгород',

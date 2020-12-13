@@ -1,7 +1,7 @@
 <template>
   <div>
 <!--    <h1>{{$route.query.depart}} - {{$route.query.arrive}} {{$route.query.date}}</h1>-->
-    <h1>{{query.depart}} - {{query.arrive}} {{query.date}}</h1>-
+    <h1>{{stations[0].name}} - {{stations[1].name}} {{query.date}}</h1>
   <table class="table table-striped my-5">
     <thead>
     <tr>
@@ -29,13 +29,22 @@ export default {
   data() {
     return {
       query: this.$route.query,
-      items: []
+      items: [],
+      stations: []
     }
   },
   created() {
     const instance = Axios.create({
       baseURL: 'http://localhost:1149/v1'
     });
+    instance.post('/stations/station_query', [{
+        id: this.query.depart
+      },
+      {
+        id: this.query.arrive
+      }
+    ]).then((response) => { this.stations = response.data })
+
     instance.post('/tickets/trains', {
       depart: this.query.depart,
       arrive: this.query.arrive,
