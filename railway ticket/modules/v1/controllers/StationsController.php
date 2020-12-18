@@ -14,7 +14,6 @@ class StationsController extends ApiController
             array_push($stations, Station::find()
                 ->where($params[$x])
                 ->one());
-        }
         return $stations;
     }
     public function actionAll_departs() {

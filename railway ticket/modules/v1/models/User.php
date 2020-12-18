@@ -13,6 +13,8 @@ use Yii;
  * @property string|null $phone Номер телефона пользователя (пасажира)
  * @property string $createdAt Дата создания
  * @property string|null $updatedAt Дата изменения
+ *  @property string|null $email email пользователя
+ * @property string|null $password_md5 hash код пароля пользователя
  *
  * @property Tickets[] $tickets Билеты пользователя
  */
@@ -34,7 +36,8 @@ class User extends BaseModel
         return [
             [['createdAt'], 'required'],
             [['createdAt', 'updatedAt'], 'safe'],
-            [['name', 'phone'], 'string', 'max' => 128],
+            [['name', 'phone', 'email'], 'string', 'max' => 128],
+            [['password_md5'], 'string', 'max' => 32],
         ];
     }
 
@@ -49,6 +52,19 @@ class User extends BaseModel
             'phone' => 'Номер телефона пользователя (пасажира)',
             'createdAt' => 'Дата создания',
             'updatedAt' => 'Дата изменения',
+            'email' => 'email пользователя',
+            'password_md5' => 'hash код пароля пользователя'
+        ];
+    }
+
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'email' => $this->email,
+            'password_md5' => $this->password_md5
         ];
     }
 
