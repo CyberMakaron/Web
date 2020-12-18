@@ -16,9 +16,9 @@ use Yii;
  * @property string $createdAt Дата создания
  * @property string|null $updatedAt Дата изменения
  *
- * @property Seats[] $seats Места
- * @property Routs $rout    Маршрут
- * @property Trains $train  Поезд
+ * @property Seat[] $seats Места
+ * @property Rout $rout    Маршрут
+ * @property Train $train  Поезд
  */
 class Voyage extends BaseModel
 {
@@ -39,8 +39,8 @@ class Voyage extends BaseModel
             [['routId', 'departDateTime', 'arriveDateTime', 'createdAt'], 'required'],
             [['routId', 'trainId'], 'integer'],
             [['departDateTime', 'arriveDateTime', 'createdAt', 'updatedAt'], 'safe'],
-            [['routId'], 'exist', 'skipOnError' => true, 'targetClass' => Routs::className(), 'targetAttribute' => ['routId' => 'id']],
-            [['trainId'], 'exist', 'skipOnError' => true, 'targetClass' => Trains::className(), 'targetAttribute' => ['trainId' => 'id']],
+            [['routId'], 'exist', 'skipOnError' => true, 'targetClass' => Rout::className(), 'targetAttribute' => ['routId' => 'id']],
+            [['trainId'], 'exist', 'skipOnError' => true, 'targetClass' => Train::className(), 'targetAttribute' => ['trainId' => 'id']],
         ];
     }
 
@@ -60,6 +60,17 @@ class Voyage extends BaseModel
         ];
     }
 
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        return [
+            'id' => $this->id,
+            'routId' => $this->routId,
+            'trainId' => $this->trainId,
+            'departDateTime' => $this->departDateTime,
+            'arriveDateTime' => $this->arriveDateTime
+        ];
+    }
+
     /**
      * Gets query for [[Seats]].
      *
@@ -67,7 +78,7 @@ class Voyage extends BaseModel
      */
     public function getSeats()
     {
-        return $this->hasMany(Seats::className(), ['voyageId' => 'id']);
+        return $this->hasMany(Seat::className(), ['voyageId' => 'id']);
     }
 
     /**
@@ -77,7 +88,7 @@ class Voyage extends BaseModel
      */
     public function getRout()
     {
-        return $this->hasOne(Routs::className(), ['id' => 'routId']);
+        return $this->hasOne(Rout::className(), ['id' => 'routId']);
     }
 
     /**
@@ -87,6 +98,6 @@ class Voyage extends BaseModel
      */
     public function getTrain()
     {
-        return $this->hasOne(Trains::className(), ['id' => 'trainId']);
+        return $this->hasOne(Train::className(), ['id' => 'trainId']);
     }
 }

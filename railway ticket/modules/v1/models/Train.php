@@ -19,7 +19,7 @@ use Yii;
  * @property string $createdAt Дата создания
  * @property string|null $updatedAt Дата изменения
  *
- * @property Voyages[] $voyages Рейсы
+ * @property Voyage[] $voyages Рейсы
  */
 class Train extends BaseModel
 {
@@ -64,6 +64,19 @@ class Train extends BaseModel
         ];
     }
 
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        return [
+            'id' => $this->id,
+            'economyCount' => $this->economyCount,
+            'coupCount' => $this->coupCount,
+            'economyMultiplierTop' => $this->economyMultiplierTop,
+            'economyMultiplierBot' => $this->economyMultiplierBot,
+            'coupMultiplierTop' => $this->coupMultiplierTop,
+            'coupMultiplierBot' => $this->coupMultiplierBot
+        ];
+    }
+
     /**
      * Gets query for [[Voyages]].
      *
@@ -71,6 +84,6 @@ class Train extends BaseModel
      */
     public function getVoyages()
     {
-        return $this->hasMany(Voyages::className(), ['trainId' => 'id']);
+        return $this->hasMany(Voyage::className(), ['trainId' => 'id']);
     }
 }

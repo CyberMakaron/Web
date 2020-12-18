@@ -13,8 +13,8 @@ use Yii;
  * @property string $createdAt Дата создания
  * @property string|null $updatedAt Дата изменения
  *
- * @property Routs[] $routs
- * @property Routs[] $routs0
+ * @property Rout[] $routs
+ * @property Rout[] $routs0
  */
 class Station extends BaseModel
 {
@@ -69,7 +69,7 @@ class Station extends BaseModel
      */
     public function getRouts()
     {
-        return $this->hasMany(Routs::className(), ['arriveID' => 'id']);
+        return $this->hasMany(Rout::className(), ['arriveID' => 'id']);
     }
 
     /**
@@ -79,6 +79,6 @@ class Station extends BaseModel
      */
     public function getRouts0()
     {
-        return $this->hasMany(Routs::className(), ['departId' => 'id']);
+        return $this->hasMany(Rout::className(), ['departId' => 'id']);
     }
 }

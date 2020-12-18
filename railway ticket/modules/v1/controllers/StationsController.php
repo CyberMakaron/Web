@@ -7,14 +7,16 @@ use yii\base\InvalidConfigException;
 
 class StationsController extends ApiController
 {
-    public function actionStation_query() {
+    public function actionStation_query()
+    {
         $stations = [];
         $params = \Yii::$app->request->getBodyParams();
-        for($x=0; $x<sizeof($params); $x++) {
+        for ($x = 0; $x < sizeof($params); $x++) {
             array_push($stations, Station::find()
                 ->where($params[$x])
                 ->one());
-        return $stations;
+            return $stations;
+        }
     }
     public function actionAll_departs() {
         $stations = Station::find()

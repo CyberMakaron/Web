@@ -14,8 +14,8 @@ use Yii;
  * @property string $createdAt Дата создания
  * @property string|null $updatedAt Дата изменения
  *
- * @property Seats $seat
- * @property Users $user
+ * @property Seat $seat
+ * @property User $user
  */
 class Ticket extends BaseModel
 {
@@ -36,8 +36,8 @@ class Ticket extends BaseModel
             [['seatId', 'userId', 'createdAt'], 'required'],
             [['seatId', 'userId'], 'integer'],
             [['createdAt', 'updatedAt'], 'safe'],
-            [['seatId'], 'exist', 'skipOnError' => true, 'targetClass' => Seats::className(), 'targetAttribute' => ['seatId' => 'id']],
-            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['userId' => 'id']],
+            [['seatId'], 'exist', 'skipOnError' => true, 'targetClass' => Seat::className(), 'targetAttribute' => ['seatId' => 'id']],
+            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userId' => 'id']],
         ];
     }
 
@@ -55,6 +55,15 @@ class Ticket extends BaseModel
         ];
     }
 
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        return [
+            'id' => $this->id,
+            'seatId' => $this->seatId,
+            'userId' => $this->userId
+        ];
+    }
+
     /**
      * Gets query for [[Seat]].
      *
@@ -62,7 +71,7 @@ class Ticket extends BaseModel
      */
     public function getSeat()
     {
-        return $this->hasOne(Seats::className(), ['id' => 'seatId']);
+        return $this->hasOne(Seat::className(), ['id' => 'seatId']);
     }
 
     /**
@@ -72,6 +81,6 @@ class Ticket extends BaseModel
      */
     public function getUser()
     {
-        return $this->hasOne(Users::className(), ['id' => 'userId']);
+        return $this->hasOne(User::className(), ['id' => 'userId']);
     }
 }

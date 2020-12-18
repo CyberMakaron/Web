@@ -16,7 +16,7 @@ use Yii;
  *  @property string|null $email email пользователя
  * @property string|null $password_md5 hash код пароля пользователя
  *
- * @property Tickets[] $tickets Билеты пользователя
+ * @property Ticket[] $tickets Билеты пользователя
  */
 class User extends BaseModel
 {
@@ -75,6 +75,6 @@ class User extends BaseModel
      */
     public function getTickets()
     {
-        return $this->hasMany(Tickets::className(), ['userId' => 'id']);
+        return $this->hasMany(Ticket::className(), ['userId' => 'id']);
     }
 }

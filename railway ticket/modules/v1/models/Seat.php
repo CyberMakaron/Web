@@ -18,8 +18,8 @@ use Yii;
  * @property string $createdAt Дата создания
  * @property string|null $updatedAt Дата изменения
  *
- * @property Voyages $voyage        Рейс
- * @property Tickets[] $tickets
+ * @property Voyage $voyage        Рейс
+ * @property Ticket $ticket
  */
 class Seat extends BaseModel
 {
@@ -41,7 +41,7 @@ class Seat extends BaseModel
             [['seatNumber', 'class', 'placement', 'createdAt'], 'required'],
             [['createdAt', 'updatedAt'], 'safe'],
             [['class', 'placement'], 'string', 'max' => 7],
-            [['voyageId'], 'exist', 'skipOnError' => true, 'targetClass' => Voyages::className(), 'targetAttribute' => ['voyageId' => 'id']],
+            [['voyageId'], 'exist', 'skipOnError' => true, 'targetClass' => Voyage::className(), 'targetAttribute' => ['voyageId' => 'id']],
         ];
     }
 
@@ -63,6 +63,19 @@ class Seat extends BaseModel
         ];
     }
 
+    public function toArray(array $fields = [], array $expand = [], $recursive = true)
+    {
+        return [
+            'id' => $this->id,
+            'voyageId' => $this->voyageId,
+            'wagonNumber' => $this->wagonNumber,
+            'seatNumber' => $this->seatNumber,
+            'class' => $this->class,
+            'placement' => $this->placement,
+            'isBusy' => $this->isBusy
+        ];
+    }
+
     /**
      * Gets query for [[Voyage]].
      *
@@ -70,7 +83,7 @@ class Seat extends BaseModel
      */
     public function getVoyage()
     {
-        return $this->hasOne(Voyages::className(), ['id' => 'voyageId']);
+        return $this->hasOne(Voyage::className(), ['id' => 'voyageId']);
     }
 
     /**
@@ -78,8 +91,17 @@ class Seat extends BaseModel
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getTickets()
-    {
-        return $this->hasMany(Tickets::className(), ['seatId' => 'id']);
-    }
+//    public function getTickets()
+//    {
+//        return $this->hasMany(Tickets::className(), ['seatId' => 'id']);
+//    }
+    /**
+     * Gets query for [[Ticket]].
+     *
+     * @return \yii\db\ActiveQuery
+     */
+     public function getTicket()
+     {
+         return $this->hasOne(Ticket::className(), ['seatId' => 'id']);
+     }
 }
