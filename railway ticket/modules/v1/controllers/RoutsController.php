@@ -15,6 +15,6 @@ class RoutsController extends ApiController
     public function actionRout($id){
         return Rout::find()
             ->where(['id' => $id])
-            ->all();
+            ->one();
     }
 }

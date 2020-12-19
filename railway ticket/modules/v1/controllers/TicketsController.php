@@ -26,12 +26,12 @@ class TicketsController extends ApiController {
 
     public function actionBuy(){
         $data = \Yii::$app->request->getBodyParams();
-
-        $ticket = new Ticket();        $seat = Seat::find()
+        $seat = Seat::find()
             ->where(['id' => $data['seatId']])
             ->one();
         $seat->setAttribute('isBusy', '1');
         $seat.save();
+        $ticket = new Ticket();
         $ticket->load($data, '');
         $ticket->save();
         return $ticket;
