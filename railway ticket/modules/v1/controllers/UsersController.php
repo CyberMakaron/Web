@@ -35,4 +35,20 @@ class UsersController extends ApiController {
         $user->save();
         return $user;
     }
+
+    public function actionChange($id, $name=null, $phone=null, $email=null, $password_md5=null){
+        $user = User::find()
+            ->where(['id' => $id])
+            ->one();
+        if ($name != null)
+            $user->setAttribute('name', $name);
+        if ($phone != null)
+            $user->setAttribute('phone', $phone);
+        if ($email != null)
+            $user->setAttribute('email', $email);
+        if ($password_md5 != null)
+            $user->setAttribute('password_md5', $password_md5);
+        $user->save();
+        return $user;
+    }
 }
