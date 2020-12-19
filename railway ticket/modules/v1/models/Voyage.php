@@ -2,6 +2,7 @@
 
 namespace app\modules\v1\models;
 
+use app\modules\v1\controllers\SeatsController;
 use app\modules\v1\models\BaseModel;
 use Yii;
 
@@ -19,6 +20,9 @@ use Yii;
  * @property Seat[] $seats Места
  * @property Rout $rout    Маршрут
  * @property Train $train  Поезд
+ * @property String $name
+ * @property int $economyEmptySeats
+ * @property int $coupEmptySeats
  */
 class Voyage extends BaseModel
 {
@@ -36,11 +40,11 @@ class Voyage extends BaseModel
     public function rules()
     {
         return [
-            [['routId', 'departDateTime', 'arriveDateTime', 'createdAt'], 'required'],
+            [['routId', 'departDateTime', 'arriveDateTime'], 'required'],
             [['routId', 'trainId'], 'integer'],
             [['departDateTime', 'arriveDateTime', 'createdAt', 'updatedAt'], 'safe'],
-            [['routId'], 'exist', 'skipOnError' => true, 'targetClass' => Rout::className(), 'targetAttribute' => ['routId' => 'id']],
-            [['trainId'], 'exist', 'skipOnError' => true, 'targetClass' => Train::className(), 'targetAttribute' => ['trainId' => 'id']],
+            [['routId'], 'exist', 'skipOnError' => true, 'targetClass' => Rout::class, 'targetAttribute' => ['routId' => 'id']],
+            [['trainId'], 'exist', 'skipOnError' => true, 'targetClass' => Train::class, 'targetAttribute' => ['trainId' => 'id']],
         ];
     }
 
@@ -62,12 +66,27 @@ class Voyage extends BaseModel
 
     public function toArray(array $fields = [], array $expand = [], $recursive = true)
     {
-        return [
-            'id' => $this->id,
-            'routId' => $this->routId,
-            'trainId' => $this->trainId,
+        $res = [
+            'name' => $this->name,
+            'rout' => $this->rout,
+            'train' => $this->train,
             'departDateTime' => $this->departDateTime,
             'arriveDateTime' => $this->arriveDateTime
+        ];
+
+        return [
+            'id' => $this->id,
+            'name' => $res['rout']['name'] . ' ' . $res['train']['name'],
+            'depart' => $res['rout']['depart']['name'],
+            'arrive' => $res['rout']['arrive']['name'],
+            'departDateTime' => $this->departDateTime,
+            'arriveDateTime' => $this->arriveDateTime,
+            'economyPriceTop' => $res['train']['economyMultiplierTop'] * $res['rout']['baseCost'],
+            'economyPriceBot' => $res['train']['economyMultiplierBot'] * $res['rout']['baseCost'],
+            'coupPriceTop' => $res['train']['coupMultiplierTop'] * $res['rout']['baseCost'],
+            'coupPriceBot' => $res['train']['coupMultiplierBot'] * $res['rout']['baseCost'],
+            'economyEmptySeats' => $this->economyEmptySeats,
+            'coupEmptySeats' => $this->coupEmptySeats
         ];
     }
 
@@ -78,7 +97,7 @@ class Voyage extends BaseModel
      */
     public function getSeats()
     {
-        return $this->hasMany(Seat::className(), ['voyageId' => 'id']);
+        return $this->hasMany(Seat::class, ['voyageId' => 'id']);
     }
 
     /**
@@ -88,7 +107,7 @@ class Voyage extends BaseModel
      */
     public function getRout()
     {
-        return $this->hasOne(Rout::className(), ['id' => 'routId']);
+        return $this->hasOne(Rout::class, ['id' => 'routId']);
     }
 
     /**
@@ -98,6 +117,35 @@ class Voyage extends BaseModel
      */
     public function getTrain()
     {
-        return $this->hasOne(Train::className(), ['id' => 'trainId']);
+        return $this->hasOne(Train::class, ['id' => 'trainId']);
+    }
+
+    /**
+     * @return string
+     */
+    public function getName()
+    {
+        $tmp = ['rout' => $this->rout, 'train' => $this->train];
+        return $tmp['rout']['name'] . ' ' . $tmp['train']['name'];
+    }
+
+    /**
+     * @return int
+     */
+    public function getEconomyEmptySeats(){
+        return count(Seat::find()
+            ->with('voyage')
+            ->where(['voyageId' => $this->id, 'class' => 'economy', 'isBusy' => '0'])
+            ->all());
+    }
+
+    /**
+     * @return int
+     */
+    public function getCoupEmptySeats(){
+        return count(Seat::find()
+            ->with('voyage')
+            ->where(['voyageId' => $this->id, 'class' => 'coup', 'isBusy' => '0'])
+            ->all());
     }
 }

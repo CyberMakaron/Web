@@ -38,10 +38,10 @@ class Seat extends BaseModel
     {
         return [
             [['voyageId', 'wagonNumber', 'seatNumber', 'isBusy'], 'integer'],
-            [['seatNumber', 'class', 'placement', 'createdAt'], 'required'],
+            [['seatNumber', 'class', 'placement'], 'required'],
             [['createdAt', 'updatedAt'], 'safe'],
             [['class', 'placement'], 'string', 'max' => 7],
-            [['voyageId'], 'exist', 'skipOnError' => true, 'targetClass' => Voyage::className(), 'targetAttribute' => ['voyageId' => 'id']],
+            [['voyageId'], 'exist', 'skipOnError' => true, 'targetClass' => Voyage::class, 'targetAttribute' => ['voyageId' => 'id']],
         ];
     }
 
@@ -83,7 +83,7 @@ class Seat extends BaseModel
      */
     public function getVoyage()
     {
-        return $this->hasOne(Voyage::className(), ['id' => 'voyageId']);
+        return $this->hasOne(Voyage::class, ['id' => 'voyageId']);
     }
 
     /**
@@ -93,7 +93,7 @@ class Seat extends BaseModel
      */
 //    public function getTickets()
 //    {
-//        return $this->hasMany(Tickets::className(), ['seatId' => 'id']);
+//        return $this->hasMany(Tickets::class, ['seatId' => 'id']);
 //    }
     /**
      * Gets query for [[Ticket]].
@@ -102,6 +102,6 @@ class Seat extends BaseModel
      */
      public function getTicket()
      {
-         return $this->hasOne(Ticket::className(), ['seatId' => 'id']);
+         return $this->hasOne(Ticket::class, ['seatId' => 'id']);
      }
 }

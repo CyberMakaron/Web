@@ -37,7 +37,7 @@ class Train extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'economyCount', 'coupCount', 'createdAt'], 'required'],
+            [['name', 'economyCount', 'coupCount'], 'required'],
             [['economyCount', 'coupCount'], 'integer'],
             [['economyMultiplierTop', 'economyMultiplierBot', 'coupMultiplierTop', 'coupMultiplierBot'], 'number'],
             [['createdAt', 'updatedAt'], 'safe'],
@@ -68,6 +68,7 @@ class Train extends BaseModel
     {
         return [
             'id' => $this->id,
+            'name' => $this->name,
             'economyCount' => $this->economyCount,
             'coupCount' => $this->coupCount,
             'economyMultiplierTop' => $this->economyMultiplierTop,
@@ -84,6 +85,6 @@ class Train extends BaseModel
      */
     public function getVoyages()
     {
-        return $this->hasMany(Voyage::className(), ['trainId' => 'id']);
+        return $this->hasMany(Voyage::class, ['trainId' => 'id']);
     }
 }

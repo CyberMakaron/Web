@@ -19,7 +19,7 @@ class m201212_080410_create_routs_table extends Migration
             'departId' => $this->integer()->notNull()->comment('ID пункта отправления'),
             'arriveID' => $this->integer()->notNull()->comment('ID пункта прибытия'),
             'baseCost' => $this->decimal(6, 2)->notNull()->comment('Базовая стоимость маршрута'),
-            'createdAt' => $this->dateTime()->notNull()->comment('Дата создания'),
+            'createdAt' => $this->dateTime()->comment('Дата создания'),
             'updatedAt' => $this->dateTime()->comment('Дата изменения')
         ]);
         $this->addForeignKey('fk_departId', '{{%routs}}', 'departId', '{{%stations}}', 'id');

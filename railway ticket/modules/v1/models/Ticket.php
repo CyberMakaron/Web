@@ -16,6 +16,8 @@ use Yii;
  *
  * @property Seat $seat
  * @property User $user
+ * @property Voyage $voyage
+ * @property Train $train
  */
 class Ticket extends BaseModel
 {
@@ -33,11 +35,11 @@ class Ticket extends BaseModel
     public function rules()
     {
         return [
-            [['seatId', 'userId', 'createdAt'], 'required'],
+            [['seatId', 'userId'], 'required'],
             [['seatId', 'userId'], 'integer'],
             [['createdAt', 'updatedAt'], 'safe'],
-            [['seatId'], 'exist', 'skipOnError' => true, 'targetClass' => Seat::className(), 'targetAttribute' => ['seatId' => 'id']],
-            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['userId' => 'id']],
+            [['seatId'], 'exist', 'skipOnError' => true, 'targetClass' => Seat::class, 'targetAttribute' => ['seatId' => 'id']],
+            [['userId'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['userId' => 'id']],
         ];
     }
 
@@ -57,11 +59,28 @@ class Ticket extends BaseModel
 
     public function toArray(array $fields = [], array $expand = [], $recursive = true)
     {
-        return [
+        $res = [
             'id' => $this->id,
-            'seatId' => $this->seatId,
-            'userId' => $this->userId
+            'user' => $this->user,
+            'seat' => $this->seat,
+            'voyage' => $this->voyage,
         ];
+        return [
+            'voyageName' => $res['voyage']['name'],
+            'departDateTime' => $res['voyage']['departDateTime'],
+            'arriveDateTime' => $res['voyage']['arriveDateTime'],
+            'passenger' => $res['user']['name'],
+            'phone' => $res['user']['phone'],
+            'seatWagon' => $res['seat']['wagonNumber'],
+            'seatNumber' => $res['seat']['seatNumber'],
+            'seatClass' => $res['seat']['class'],
+            'seatPlacement' => $res['seat']['placement'],
+        ];
+    }
+
+    public function behaviors()
+    {
+        return parent::behaviors();
     }
 
     /**
@@ -71,7 +90,7 @@ class Ticket extends BaseModel
      */
     public function getSeat()
     {
-        return $this->hasOne(Seat::className(), ['id' => 'seatId']);
+        return $this->hasOne(Seat::class, ['id' => 'seatId']);
     }
 
     /**
@@ -81,6 +100,24 @@ class Ticket extends BaseModel
      */
     public function getUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'userId']);
+        return $this->hasOne(User::class, ['id' => 'userId']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getVoyage()
+    {
+        $seat = new Seat($this->seat);
+        return $seat->getVoyage();
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTrain()
+    {
+        $voyage = new Voyage($this->voyage);
+        return $voyage->getTrain();
     }
 }

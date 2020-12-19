@@ -15,7 +15,7 @@ class m201211_192015_create_stations_table extends Migration
         $this->createTable('{{%stations}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string(30)->notNull()->comment('Название станции'),
-            'createdAt' => $this->dateTime()->notNull()->comment('Дата создания'),
+            'createdAt' => $this->dateTime()->comment('Дата создания'),
             'updatedAt' => $this->dateTime()->comment('Дата изменения')
         ]);
     }

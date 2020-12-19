@@ -1,42 +1,39 @@
 <?php
 
-
 namespace app\modules\v1\controllers;
-
+use app\modules\v1\models\Seat;
+use app\modules\v1\models\Ticket;
+use yii\db\Query;
 
 class TicketsController extends ApiController {
 
-    public function actionTrains() {
-        return [
-            [ 'depart' => 'Белгород',
-              'departTime'=> '8:00',
-              'arrive'=> 'Старый Оскол',
-              'arriveTime' => '10:45',
-              'train' => 'Белгород - Старый Оскол №001',
-              'economyPrice' => '50 руб',
-              'economyEmptySeats' => '30',
-              'coupPrice' => '1000 руб',
-              'coupEmptySeats' => '15' ],
+    public function actionUser_tickets($userId) {
+            return Ticket::find()
+                ->where(['userId' => $userId])
+                ->all();
+    }
 
-            [ 'depart' => 'Белгород',
-                'departTime'=> '11:00',
-                'arrive'=> 'Старый Оскол',
-                'arriveTime' => '13:45',
-                'train' => 'Белгород - Старый Оскол №001',
-                'economyPrice' => '50 руб',
-                'economyEmptySeats' => '30',
-                'coupPrice' => '1000 руб',
-                'coupEmptySeats' => '15' ],
+    public function actionVoyage_tickets($voyageId) {
+        return Ticket::find()
+            ->where(['voyageId' => $voyageId])
+            ->all();
+    }
 
-            [ 'depart' => 'Белгород',
-                'departTime'=> '18:00',
-                'arrive'=> 'Старый Оскол',
-                'arriveTime' => '20:45',
-                'train' => 'Белгород - Старый Оскол №001',
-                'economyPrice' => '50 руб',
-                'economyEmptySeats' => '30',
-                'coupPrice' => '1000 руб',
-                'coupEmptySeats' => '15' ]
-        ];
+    public function actionTickets() {
+        return Ticket::find()
+            ->all();
+    }
+
+    public function actionBuy(){
+        $data = \Yii::$app->request->getBodyParams();
+
+        $ticket = new Ticket();        $seat = Seat::find()
+            ->where(['id' => $data['seatId']])
+            ->one();
+        $seat->setAttribute('isBusy', '1');
+        $seat.save();
+        $ticket->load($data, '');
+        $ticket->save();
+        return $ticket;
     }
 }

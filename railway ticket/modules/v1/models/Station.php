@@ -32,7 +32,7 @@ class Station extends BaseModel
     public function rules()
     {
         return [
-            [['name', 'createdAt'], 'required'],
+            [['name'], 'required'],
             [['createdAt', 'updatedAt'], 'safe'],
             [['name'], 'string', 'max' => 30],
         ];
@@ -69,7 +69,7 @@ class Station extends BaseModel
      */
     public function getRouts()
     {
-        return $this->hasMany(Rout::className(), ['arriveID' => 'id']);
+        return $this->hasMany(Rout::class, ['arriveID' => 'id']);
     }
 
     /**
@@ -79,6 +79,6 @@ class Station extends BaseModel
      */
     public function getRouts0()
     {
-        return $this->hasMany(Rout::className(), ['departId' => 'id']);
+        return $this->hasMany(Rout::class, ['departId' => 'id']);
     }
 }

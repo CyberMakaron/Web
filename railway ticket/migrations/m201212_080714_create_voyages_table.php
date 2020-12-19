@@ -19,7 +19,7 @@ class m201212_080714_create_voyages_table extends Migration
             'trainId' => $this->integer()->comment('ID поезда'),
             'departDateTime' => $this->dateTime()->notNull()->comment('Дата и время отправления'),
             'arriveDateTime' => $this->dateTime()->notNull()->comment('Дата и время прибытия'),
-            'createdAt' => $this->dateTime()->notNull()->comment('Дата создания'),
+            'createdAt' => $this->dateTime()->comment('Дата создания'),
             'updatedAt' => $this->dateTime()->comment('Дата изменения')
         ]);
         $this->addForeignKey('fk_routId', '{{%voyages}}', 'routId', '{{%routs}}', 'id');

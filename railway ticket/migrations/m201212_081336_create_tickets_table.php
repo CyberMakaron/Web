@@ -16,7 +16,7 @@ class m201212_081336_create_tickets_table extends Migration
             'id' => $this->primaryKey(),
             'seatId' => $this->integer()->notNull()->comment('ID места'),
             'userId' => $this->integer()->notNull()->comment(''),
-            'createdAt' => $this->dateTime()->notNull()->comment('Дата создания'),
+            'createdAt' => $this->dateTime()->comment('Дата создания'),
             'updatedAt' => $this->dateTime()->comment('Дата изменения')
         ]);
         $this->addForeignKey('fk_seatId', '{{%tickets}}', 'seatId', '{{%seats}}', 'id');

@@ -5,8 +5,8 @@
       <div class="form-row row-travel">
         <div class="col-md-3 mb-3">
           <label for="select-from" v-bind:class="depart_status">Откуда</label>
-          <select class="form-control" v-bind:class="depart_status" id="select-from" v-model="depart" v-on:change="fieldChanged(1)">
-            <option disabled value="">Выберите пункт отправления</option>
+          <select class="form-control" v-bind:class="depart_status" id="select-from" v-model="departId" v-on:change="fieldChanged(1)">
+            <option disabled value="0">Выберите пункт отправления</option>
             <option v-for="option in depart_options" v-bind:value="option.id">
               {{ option.name }}
             </option>
@@ -14,8 +14,8 @@
         </div>
         <div class="col-md-3 mb-3">
           <label for="select-to" v-bind:class="arrive_status">Куда</label>
-          <select class="form-control" v-bind:class="arrive_status" id="select-to" v-model="arrive" v-on:change="fieldChanged(2)">
-            <option disabled value="">Выберите пункт прибытия</option>
+          <select class="form-control" v-bind:class="arrive_status" id="select-to" v-model="arriveId" v-on:change="fieldChanged(2)">
+            <option disabled value="0">Выберите пункт прибытия</option>
             <option v-for="option in arrive_options" v-bind:value="option.id" >
               {{ option.name }}
             </option>
@@ -43,8 +43,8 @@ export default {
   components: {},
   data() {
     return {
-      depart: "",
-      arrive: "",
+      departId: "0",
+      arriveId: "0",
       date: "",
       depart_options: [],
       arrive_options: [],
@@ -57,19 +57,16 @@ export default {
   },
   created() {
     this.minDate = new Date().toISOString().split("T")[0];
-    const instance = Axios.create({
-      baseURL: 'http://localhost:1149/v1'
-    });
-    instance.get('/stations/all_departs').then((response) => this.depart_options = response.data)
-    instance.get('/stations/all_arrives').then((response) => this.arrive_options = response.data)
+    this.$http.get('/stations/all_departs').then((response) => this.depart_options = response.data)
+    this.$http.get('/stations/all_arrives').then((response) => this.arrive_options = response.data)
   },
   methods: {
     btnClick(){
-      if (this.depart == "")
+      if (this.departId == "0")
         this.depart_status = "border-danger text-danger";
       else
         this.depart_status = "";
-      if (this.arrive == "")
+      if (this.arriveId == "0")
         this.arrive_status = "border-danger text-danger";
       else
         this.arrive_status = "";
@@ -78,7 +75,7 @@ export default {
       else
         this.date_status = "";
       if(this.depart_status == "" && this.arrive_status == "" && this.date_status =="")
-        this.$router.push({name: 'RoutsTable', query: {depart: this.depart, arrive : this.arrive, date: this.date}});
+        this.$router.push({name: 'RoutsTable', query: {departId: this.departId, arriveId : this.arriveId, date: this.date}});
     },
     fieldChanged(field){
       switch (field){

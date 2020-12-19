@@ -34,11 +34,15 @@ class User extends BaseModel
     public function rules()
     {
         return [
-            [['createdAt'], 'required'],
             [['createdAt', 'updatedAt'], 'safe'],
             [['name', 'phone', 'email'], 'string', 'max' => 128],
-            [['password_md5'], 'string', 'max' => 32],
+            [['password_md5'], 'string', 'max' => 33],
         ];
+    }
+
+    public function behaviors()
+    {
+        return parent::behaviors();
     }
 
     /**
@@ -64,7 +68,7 @@ class User extends BaseModel
             'name' => $this->name,
             'phone' => $this->phone,
             'email' => $this->email,
-            'password_md5' => $this->password_md5
+//            'password_md5' => $this->password_md5
         ];
     }
 
@@ -75,6 +79,18 @@ class User extends BaseModel
      */
     public function getTickets()
     {
-        return $this->hasMany(Ticket::className(), ['userId' => 'id']);
+        return $this->hasMany(Ticket::class, ['userId' => 'id']);
+    }
+
+    public function checkPass($password_md5) {
+        return $this->password_md5 == $password_md5;
+    }
+
+    public function getUser() {
+        return [
+            'name' => $this->name,
+            'email' => $this->email,
+            'accessToken' => md5(microtime(null))
+        ];
     }
 }
