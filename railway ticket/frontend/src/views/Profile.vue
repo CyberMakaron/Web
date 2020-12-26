@@ -76,7 +76,9 @@ export default {
       let pass = null
       if (this.password1 !== "")
         MD5(this.password1).toString()
+      console.log(this.uname)
       if (this.uname === User.name) this.uname = null
+      console.log(this.uname)
       if (this.email === User.email) this.email = null
       if (this.phone === User.phone) this.phone = null
       this.$http.put('users/change', {
@@ -87,7 +89,7 @@ export default {
           password_md5: pass
         }).then((response)=>{User.login(response.data)}).catch((errors)=>console.log(errors))
       alert('Обновите страницу')
-      location = location
+      // location = location
       this.changeBtn()
     },
     fieldChanged(){
