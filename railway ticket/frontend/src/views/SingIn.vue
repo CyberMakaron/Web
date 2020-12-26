@@ -7,9 +7,9 @@
 <!--    <label for="inputPassword" class="sr-only">Password</label>-->
     <input type="password" id="inputPassword" class="form-control mb-2" v-bind:class="edits_status" placeholder="Пароль" required="" v-model="password" v-on:change="fieldChanged()">
     <div v-bind:class="edits_status" v-if="edits_status != ''">Неверный логин или пароль!</div>
-    <div class="checkbox mb-3">
-      <label><input type="checkbox" name="remember-me"> Запомнить меня</label>
-    </div>
+<!--    <div class="checkbox mb-3">-->
+<!--      <label><input type="checkbox" name="remember-me"> Запомнить меня</label>-->
+<!--    </div>-->
     <button class="btn btn-lg btn-danger btn-block" type="submit">Войти</button>
     <div class="mt-2">
       <router-link class="mr-5" href="" v-bind:to="{name: 'Registration'}">Регистрация</router-link>

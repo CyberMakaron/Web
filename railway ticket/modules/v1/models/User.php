@@ -88,8 +88,10 @@ class User extends BaseModel
 
     public function getUser() {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
+            'phone' => $this->phone,
             'accessToken' => md5(microtime(null))
         ];
     }

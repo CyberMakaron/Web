@@ -3,6 +3,10 @@ import App from './App.vue'
 import router from './router'
 import Axios from "axios";
 
+import VueSimpleAlert from "vue-simple-alert";
+
+Vue.use(VueSimpleAlert);
+
 Vue.config.productionTip = false
 
 Vue.prototype.$http = Axios.create({

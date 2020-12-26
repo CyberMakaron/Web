@@ -6,9 +6,17 @@ use app\modules\v1\models\Voyage;
 
 class VoyagesController extends ApiController
 {
-    public function actionVoyage($id){
+    public function actionVoyage_from_id($id){
         return Voyage::find()
             ->where(['id' => $id])
-            ->all();
+            ->one();
+    }
+    public function actionVoyages($departId, $arriveId, $depart_date){
+    return Voyage::find()
+        ->joinWith('rout')
+        ->where(['departId' => $departId,
+                 'arriveId' => $arriveId])
+        ->andWhere(['like', 'departDatetime', $depart_date])
+        ->all();
     }
 }

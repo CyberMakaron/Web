@@ -45,6 +45,11 @@ class Seat extends BaseModel
         ];
     }
 
+    public function behaviors()
+    {
+        return parent::behaviors();
+    }
+
     /**
      * {@inheritdoc}
      */

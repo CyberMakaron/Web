@@ -30,9 +30,11 @@ class TicketsController extends ApiController {
             ->where(['id' => $data['seatId']])
             ->one();
         $seat->setAttribute('isBusy', '1');
-        $seat.save();
+        $seat->save();
         $ticket = new Ticket();
-        $ticket->load($data, '');
+//        $ticket->load($data, '');
+        $ticket->setAttribute('userId', $data['userId']);
+        $ticket->setAttribute('seatId', $data['seatId']);
         $ticket->save();
         return $ticket;
     }

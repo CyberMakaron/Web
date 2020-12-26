@@ -69,7 +69,7 @@ class Rout extends BaseModel
     public function toArray(array $fields = [], array $expand = [], $recursive = true)
     {
         return [
-//            'id' => $this->id,
+            'id' => $this->id,
             'name' => $this->name,
             'depart' => $this->depart,
             'arrive' => $this->arrive,

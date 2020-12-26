@@ -1,11 +1,14 @@
 <template>
   <tr>
-    <td>{{rout.depart}}<br>{{rout.departTime}}</td>
-    <td>{{rout.arrive}}<br>{{rout.arriveTime}}</td>
-    <td>{{rout.train}}</td>
-    <td>Плацкарт: {{rout.economyPrice}}<br>Свободно: {{rout.economyEmptySeats}}<br>Купе: {{rout.coupPrice}}<br>Свободно: {{rout.coupEmptySeats}}</td>
+    <td>{{voyage.depart}}<br>{{voyage.departDateTime}}</td>
+    <td>{{voyage.arrive}}<br>{{voyage.arriveDateTime}}</td>
+    <td>{{voyage.name}}</td>
+    <td>Плацкарт: {{voyage.economyPriceBot}}-{{voyage.economyPriceTop}} ₽<br>
+      Свободно: {{voyage.economyEmptySeats}}<br>
+      Купе: {{voyage.coupPriceBot}}-{{voyage.coupPriceTop}} ₽<br>
+      Свободно: {{voyage.coupEmptySeats}}</td>
     <td>
-      <button class="btn btn-danger btn-block btn-bot">Купить билеты</button>
+      <router-link class="btn btn-danger btn-block btn-bot" v-bind:to="{name: 'BuyTickets', query: {voyageId: voyage.id}}">Купить билеты</router-link>
     </td>
   </tr>
 </template>
@@ -13,9 +16,6 @@
 <script>
 export default {
   name: "RoutingTableRow",
-  props: ["rout"],
-  methods: {
-
-  }
+  props: ["voyage"]
 }
 </script>

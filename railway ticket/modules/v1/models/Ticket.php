@@ -66,9 +66,12 @@ class Ticket extends BaseModel
             'voyage' => $this->voyage,
         ];
         return [
-            'voyageName' => $res['voyage']['name'],
-            'departDateTime' => $res['voyage']['departDateTime'],
-            'arriveDateTime' => $res['voyage']['arriveDateTime'],
+//            'voyageName' => $res['voyage']['name'],
+            'voyage' => $res['voyage'],
+//            'depart' => $res['voyage']['depart'],
+//            'arrive' => $res['voyage']['arrive'],
+//            'departDateTime' => $res['voyage']['departDateTime'],
+//            'arriveDateTime' => $res['voyage']['arriveDateTime'],
             'passenger' => $res['user']['name'],
             'phone' => $res['user']['phone'],
             'seatWagon' => $res['seat']['wagonNumber'],

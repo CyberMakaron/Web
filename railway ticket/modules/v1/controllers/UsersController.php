@@ -36,18 +36,19 @@ class UsersController extends ApiController {
         return $user;
     }
 
-    public function actionChange($id, $name=null, $phone=null, $email=null, $password_md5=null){
+    public function actionChange(){ //$id=null, $name=null, $phone=null, $email=null, $password_md5=null
+        $data = \Yii::$app->request->getBodyParams();
         $user = User::find()
-            ->where(['id' => $id])
+            ->where(['id' => $data['id']])
             ->one();
-        if ($name != null)
-            $user->setAttribute('name', $name);
-        if ($phone != null)
-            $user->setAttribute('phone', $phone);
-        if ($email != null)
-            $user->setAttribute('email', $email);
-        if ($password_md5 != null)
-            $user->setAttribute('password_md5', $password_md5);
+        if ($data['name'] != null)
+            $user->setAttribute('name', $data['name']);
+        if ($data['phone'] != null)
+            $user->setAttribute('phone', $data['phone']);
+        if ($data['email'] != null)
+            $user->setAttribute('email', $data['email']);
+        if ($data['password_md5'] != null)
+            $user->setAttribute('password_md5', $data['password_md5']);
         $user->save();
         return $user;
     }
