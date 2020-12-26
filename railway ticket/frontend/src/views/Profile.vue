@@ -65,10 +65,6 @@ export default {
         this.isDisable = null
     },
     changeUser(){
-      // let id;
-      // this.$http.get('users/user', {
-      //   email: this.user.email
-      // }).then((response) => id = response.data['id'])
       if (this.password1 !== this.password2) {
         this.edits_status = "border-danger text-danger"
         return
